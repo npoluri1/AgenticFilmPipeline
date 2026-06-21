@@ -1,0 +1,37 @@
+pipeline:
+  name: "Telugu Film Production Pipeline"
+  source_language: "te"
+  target_language: "te"
+  total_duration_minutes: 180
+
+  agents:
+    - name: script_agent
+      parallel: false
+      depends_on: []
+    - name: storyboard_agent
+      parallel: false
+      depends_on: [script_agent]
+    - name: character_agent
+      parallel: true
+      depends_on: [script_agent]
+    - name: voice_agent
+      parallel: true
+      depends_on: [script_agent]
+    - name: animation_agent
+      parallel: false
+      depends_on: [character_agent, storyboard_agent]
+    - name: lipsync_agent
+      parallel: false
+      depends_on: [voice_agent, animation_agent]
+    - name: render_agent
+      parallel: false
+      depends_on: [lipsync_agent]
+    - name: quality_agent
+      parallel: false
+      depends_on: [render_agent]
+
+  quality_thresholds:
+    consistency_score: 0.85
+    lip_sync_accuracy: 0.90
+    emotion_fidelity: 0.80
+    scene_coherence: 0.85

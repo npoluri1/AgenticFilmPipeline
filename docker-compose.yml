@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+      - "D:\\WorkSpace\\Telugu_Film_Stroy_Board:/data/scripts:ro"
+    environment:
+      PYTHONUNBUFFERED: "1"
+      PYTHONIOENCODING: "utf-8"
+    command: uvicorn src.web.server:app --host 0.0.0.0 --port 8080 --reload
+
+  frontend:
+    image: node:20-alpine
+    ports:
+      - "3000:3000"
+    working_dir: /app
+    volumes:
+      - ./web:/app
+    environment:
+      NEXT_PUBLIC_API_URL: "http://localhost:8080"
+    command: sh -c "npm install && npm run dev"
+
+  free-models:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      OLLAMA_KEEP_ALIVE: "24h"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+volumes:
+  ollama_data:

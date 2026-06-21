@@ -1,0 +1,169 @@
+models:
+  tiers:
+    free:
+      label: "Free Models"
+      description: "Local/open-source models — no API key required"
+    premium:
+      label: "Premium Models"
+      description: "Cloud API models — requires API key"
+
+  categories:
+    llm:
+      label: "LLM (Script Analysis, Dialog, Reasoning)"
+      free:
+        - id: ollama_llama3
+          name: "Llama 3.2 (Ollama)"
+          provider: ollama
+          model: "llama3.2:3b"
+          cost: "free"
+          quality: "good"
+        - id: ollama_qwen
+          name: "Qwen 2.5 (Ollama)"
+          provider: ollama
+          model: "qwen2.5:7b"
+          cost: "free"
+          quality: "very_good"
+        - id: ollama_mistral
+          name: "Mistral 7B (Ollama)"
+          provider: ollama
+          model: "mistral:7b"
+          cost: "free"
+          quality: "good"
+      premium:
+        - id: openai_gpt4o
+          name: "GPT-4o"
+          provider: openai
+          model: "gpt-4o"
+          cost: "paid"
+          quality: "excellent"
+        - id: anthropic_claude35
+          name: "Claude 3.5 Sonnet"
+          provider: anthropic
+          model: "claude-3-5-sonnet-20241022"
+          cost: "paid"
+          quality: "excellent"
+        - id: openai_gpt4o_mini
+          name: "GPT-4o Mini"
+          provider: openai
+          model: "gpt-4o-mini"
+          cost: "cheap"
+          quality: "very_good"
+
+    tts:
+      label: "Text-to-Speech (Telugu Dialog)"
+      free:
+        - id: ollama_tts
+          name: "Ollama TTS (Local)"
+          provider: ollama
+          model: "tts"
+          cost: "free"
+          quality: "basic"
+        - id: coqui_tts
+          name: "Coqui TTS (Local)"
+          provider: local
+          model: "coqui-tts"
+          cost: "free"
+          quality: "good"
+      premium:
+        - id: elevenlabs
+          name: "ElevenLabs Multilingual v2"
+          provider: elevenlabs
+          model: "eleven_multilingual_v2"
+          cost: "paid"
+          quality: "excellent"
+        - id: openai_tts
+          name: "OpenAI TTS HD"
+          provider: openai
+          model: "tts-1-hd"
+          cost: "paid"
+          quality: "excellent"
+
+    image:
+      label: "Image Generation (Storyboard Frames)"
+      free:
+        - id: stable_diffusion_local
+          name: "Stable Diffusion (Local)"
+          provider: local
+          model: "sd-xl"
+          cost: "free"
+          quality: "good"
+      premium:
+        - id: openai_dalle3
+          name: "DALL-E 3"
+          provider: openai
+          model: "dall-e-3"
+          cost: "paid"
+          quality: "excellent"
+        - id: midjourney
+          name: "Midjourney"
+          provider: midjourney
+          model: "midjourney-v6"
+          cost: "paid"
+          quality: "excellent"
+
+    video:
+      label: "Video Generation (Animation)"
+      free:
+        - id: animatediff
+          name: "AnimateDiff (Local)"
+          provider: local
+          model: "animatediff"
+          cost: "free"
+          quality: "basic"
+      premium:
+        - id: runway_gen4
+          name: "Runway Gen-4"
+          provider: runway
+          model: "gen-4"
+          cost: "paid"
+          quality: "excellent"
+        - id: pika
+          name: "Pika 2.0"
+          provider: pika
+          model: "pika-2.0"
+          cost: "paid"
+          quality: "excellent"
+
+    voice_clone:
+      label: "Voice Cloning"
+      free:
+        - id: coqui_vc
+          name: "Coqui Voice Clone (Local)"
+          provider: local
+          model: "coqui-vc"
+          cost: "free"
+          quality: "good"
+      premium:
+        - id: elevenlabs_clone
+          name: "ElevenLabs Voice Clone"
+          provider: elevenlabs
+          model: "elevenlabs-clone"
+          cost: "paid"
+          quality: "excellent"
+
+    lipsync:
+      label: "Lip Sync"
+      free:
+        - id: wav2lip_local
+          name: "Wav2Lip (Local)"
+          provider: local
+          model: "wav2lip"
+          cost: "free"
+          quality: "good"
+      premium:
+        - id: runway_lipsync
+          name: "Runway Lip Sync"
+          provider: runway
+          model: "runway-lipsync"
+          cost: "paid"
+          quality: "excellent"
+
+pipeline:
+  default_tier: "free"
+  default_models:
+    llm: "ollama_llama3"
+    tts: "coqui_tts"
+    image: "stable_diffusion_local"
+    video: "animatediff"
+    voice_clone: "coqui_vc"
+    lipsync: "wav2lip_local"
