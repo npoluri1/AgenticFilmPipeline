@@ -1,6 +1,3 @@
-import json
-from pathlib import Path
-from typing import Optional
 
 from src.models.schemas import FilmScript, Act, Sequence, Shot
 from src.utils.logger import get_logger
@@ -28,7 +25,6 @@ class ScriptEnhancer:
         return shot
 
     def _generate_visual(self, shot: Shot, seq: Sequence) -> str:
-        base = shot.setting
         descs = {
             "BLACK": "Complete darkness. Theatrical silence builds anticipation.",
             "CLOSE-UP": f"Intimate close-up revealing micro-expressions. Every subtle muscle movement tells the story of {seq.english_name.lower()}.",
@@ -99,9 +95,9 @@ class Humanizer:
         lines.append("")
 
         for act in film.acts:
-            lines.append(f"")
+            lines.append("")
             lines.append(f"# ⚔️ ACT {self._to_roman(act.number)} — \"{act.english_subtitle}\"")
-            lines.append(f"")
+            lines.append("")
             for seq in act.sequences:
                 lines.append(f"## 🎬 Sequence {seq.number}: {seq.english_name}")
                 lines.append(f"**({seq.runtime_minutes} min)**")

@@ -1,4 +1,3 @@
-import time
 import concurrent.futures
 
 from src.agents.base import BaseAgent
@@ -117,7 +116,7 @@ class AgentSupervisor:
 
     def get_pipeline_summary(self, results: list[AgentResult], ctx: PipelineContext) -> str:
         lines = ["", "=" * 60,
-                 f"  RUTHAMBHARA — Agentic Film Pipeline Report",
+                 "  RUTHAMBHARA — Agentic Film Pipeline Report",
                  "=" * 60]
         if ctx.film:
             lines.append(f"  Film: {ctx.film.title} ({ctx.film.telugu_title})")

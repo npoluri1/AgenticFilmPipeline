@@ -26,10 +26,9 @@ class RuthambharaReader:
         return film
 
     def _parse_header(self, lines: list[str]) -> FilmScript:
-        title_line = next((l for l in lines if l.startswith("# ఋతంభర")), "")
-        runtime_line = next((l for l in lines if "రన్టైమ్" in l or "Runtime" in l), "")
-        lang_line = next((l for l in lines if "భాష" in l or "language" in l.lower()), "")
-        aspect_line = next((l for l in lines if "ఆస్పెక్ట్" in l or "aspect" in l.lower()), "")
+        runtime_line = next((line for line in lines if "రన్టైమ్" in line or "Runtime" in line), "")
+        lang_line = next((line for line in lines if "భాష" in line or "language" in line.lower()), "")
+        aspect_line = next((line for line in lines if "ఆస్పెక్ట్" in line or "aspect" in line.lower()), "")
 
         runtime_match = re.search(r"(\d+)\s*(?:గంటల|hours?)\s*(?:\s+(\d+)\s*(?:నిమిషాలు|minutes?))?", runtime_line)
         hours = int(runtime_match.group(1)) if runtime_match else 3
@@ -120,7 +119,6 @@ class RuthambharaReader:
         acts = []
         current_act = None
         current_sequence = None
-        act_i = 0
 
         i = 0
         while i < len(lines):

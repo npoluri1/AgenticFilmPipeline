@@ -41,7 +41,6 @@ def test_reader_parses_cast(film):
 
 def test_reader_parses_music_themes(film):
     assert len(film.music_themes) >= 3
-    theme_names = [t.name for t in film.music_themes]
     assert any("RAKTHA" in t.name.upper() or "RAGAM" in t.name.upper() for t in film.music_themes)
 
 
@@ -122,7 +121,6 @@ def test_model_registry_default_models():
 
 
 def test_agent_uses_selected_model(ctx):
-    from src.models.model_registry import registry
     ctx.model_selections = {"llm": "ollama_qwen"}
     supervisor = AgentSupervisor()
     supervisor.run(ctx)
