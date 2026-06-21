@@ -103,7 +103,7 @@ function ProgressBar({ value, max, color = "var(--accent)" }: {
 }
 
 function MetricCard({ icon, label, value, sub, accent, children, ring }: {
-  icon?: string; label: string; value?: string | number; sub?: string;
+  icon?: string; label: string; value?: string | number | React.ReactNode; sub?: string;
   accent?: boolean; children?: React.ReactNode; ring?: { value: number; color?: string };
 }) {
   return (
