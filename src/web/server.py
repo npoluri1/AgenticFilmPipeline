@@ -30,6 +30,9 @@ app.add_middleware(
 if VIDEOS_DIR.exists():
     app.mount("/videos", StaticFiles(directory=str(VIDEOS_DIR)), name="videos")
 
+from src.dashboard_plugin import mount_dashboard
+mount_dashboard(app, "AgenticFilmPipeline", "Agentic Film Pipeline Enterprise Dashboard")
+
 
 class RunPipelineRequest(BaseModel):
     mode: str = "hybrid"
