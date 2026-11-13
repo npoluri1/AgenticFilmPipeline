@@ -1,10 +1,11 @@
 import pytest
 from pathlib import Path
+from src.config import settings
 from src.models.schemas import PipelineContext, PipelineMode
 from src.supervisor import AgentSupervisor
 from src.readers.ruthambhara_reader import RuthambharaReader
 
-SCRIPT_PATH = "D:\\WorkSpace\\Telugu_Film_Stroy_Board\\feature\\ఋతంభర_పూర్తి_సినిమా_స్క్రిప్ట్.md"
+SCRIPT_PATH = str(settings.script)
 
 
 @pytest.fixture

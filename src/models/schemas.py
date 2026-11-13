@@ -194,6 +194,9 @@ class QualityReport:
     music_theme_accuracy: float
     passed: bool
     issues: list[str] = field(default_factory=list)
+    overall_score: float = 0.0
+    rubric: dict[str, float] = field(default_factory=dict)
+    repair_actions: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -210,6 +213,30 @@ class PipelineContext:
     quality_reports: list[QualityReport] = field(default_factory=list)
     model_selections: dict[str, str] = field(default_factory=dict)
     tier: str = "free"
+    # ── v3 runtime fields ──────────────────────────────────────────
+    run_id: str = ""
+    options: dict[str, object] = field(default_factory=dict)
+    artifacts: dict[str, object] = field(default_factory=dict)
+    analysis: dict[str, object] = field(default_factory=dict)
+    storyboard_frames: list[object] = field(default_factory=list)
+    voice_lines: list[object] = field(default_factory=list)
+    render_manifest: dict[str, object] = field(default_factory=dict)
+    repair_loop: int = 0
+    errors: list[str] = field(default_factory=list)
+
+    @property
+    def media_enabled(self) -> bool:
+        # Legacy callers (AgentSupervisor + unit tests) pass no options and must
+        # stay fast: media is opt-in.  The API always sets these explicitly.
+        return bool(self.options.get("render_media", False))
+
+    @property
+    def video_enabled(self) -> bool:
+        return bool(self.options.get("render_video", False))
+
+    @property
+    def scope(self) -> str:
+        return str(self.options.get("scope", "full"))
 
 
 @dataclass

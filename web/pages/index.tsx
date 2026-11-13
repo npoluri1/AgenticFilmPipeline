@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import axios from "axios";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8081";
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 interface Shot {
   number: string; setting: string; duration_sec: number;

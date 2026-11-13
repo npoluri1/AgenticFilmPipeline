@@ -1,19 +1,30 @@
-FROM node:20-alpine AS web-builder
-WORKDIR /app
-COPY web/package.json web/package-lock.json* ./
-RUN npm install
-COPY web/ .
-RUN npm run build
+# ── RUTHAMBHARA Agentic Film Studio — production image ────────────────────────
+# The built-in server-rendered dashboard is the supported UI, so no Node build
+# step is required.  `web/` remains available as an optional Next.js client.
+FROM python:3.12-slim AS runtime
 
-FROM python:3.11-slim
-WORKDIR /app
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONIOENCODING=utf-8 \
+    PIP_NO_CACHE_DIR=1 \
+    AFP_ENV=production \
+    AFP_HOST=0.0.0.0 \
+    AFP_PORT=8080
 
-RUN pip install --no-cache-dir fastapi uvicorn pyyaml pydantic httpx rich
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ffmpeg curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
 
 COPY . .
 
-COPY --from=web-builder /app/out /app/web/out
+RUN pip install --upgrade pip \
+    && pip install ".[rag]" \
+    && mkdir -p output
 
-EXPOSE 8080 3000
+EXPOSE 8080
 
-CMD uvicon src.web.server:app --host 0.0.0.0 --port 8080 & cd web && npx next start -p 3000
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+    CMD curl -fsS http://localhost:8080/health || exit 1
+
+CMD ["python", "main.py", "serve", "--host", "0.0.0.0", "--port", "8080"]

@@ -1,16 +1,85 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "agentic-film-pipeline"
-version = "2.0.0"
-description = "RUTHAMBHARA — Agentic Film Pipeline for AI-powered film production"
+version = "3.0.0"
+description = "RUTHAMBHARA — an agentic Telugu feature-film studio (LangGraph, GraphRAG, MCP, evaluations)"
+readme = "README.md"
 requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "RUTHAMBHARA Studio" }]
+keywords = ["agentic-ai", "langgraph", "graphrag", "mcp", "film", "telugu", "fastapi"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Framework :: FastAPI",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+# Core runtime: enough for the complete offline MVP (plan, storyboard, voice,
+# animatics, render manifest, quality gate, dashboard, API and MCP).
 dependencies = [
-    "pydantic>=2.0",
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.27",
+    "pydantic>=2.6",
+    "python-multipart>=0.0.9",
     "pyyaml>=6.0",
     "httpx>=0.27",
     "rich>=13.0",
-    "fastapi>=0.109",
-    "uvicorn[standard]>=0.27",
+    "numpy>=1.26",
+    "pillow>=10.0",
+    "langgraph>=0.2",
+    "langchain-core>=0.3",
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=8.0", "pytest-asyncio>=0.24", "black", "ruff"]
+# Local vector search (falls back to a dependency-free numpy index).
+rag = ["faiss-cpu>=1.8"]
+# Free neural TTS (falls back to an offline WAV synthesiser).
+voice = ["edge-tts>=6.1"]
+# Local LLM serving (opt-in via AFP_USE_OLLAMA=1).
+ollama = ["ollama>=0.4"]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+    "black>=24.0",
+    "ruff>=0.6",
+]
+all = [
+    "agentic-film-pipeline[rag,voice,dev]",
+]
+
+[project.scripts]
+ruthambhara = "src.cli:entrypoint"
+
+[project.urls]
+Homepage = "https://github.com/ruthambhara/agentic-film-pipeline"
+Dashboard = "http://localhost:8080/dashboard"
+
+[tool.setuptools]
+py-modules = ["main"]
+
+[tool.setuptools.packages.find]
+include = ["src*"]
+namespaces = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+exclude = [".venv", "output", "web", ".ruff_cache"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501", "B008"]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
